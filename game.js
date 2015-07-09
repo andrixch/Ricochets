@@ -66,6 +66,9 @@
             ctx.clearRect(0, 0, this.width, this.height);
             Background.draw();
             Bricks.draw();
+            if (Hud.win) {
+                return;
+            }
             Paddle.draw();
             Hud.draw();
             Ball.draw();
@@ -73,6 +76,12 @@
 
         levelUp: function() {
             Hud.lv += 1;
+            if (Hud.lv > 5) {
+                Hud.win = true;
+                Screen.win();
+                Game.canvas.addEventListener('click', Game.restartGame, false);
+                return;
+            }
             Bricks.init();
             Ball.init();
             Paddle.init();
@@ -376,6 +385,7 @@
         init: function() {
             this.lv = 1;
             this.score = 0;
+            this.win = false;
         },
 
         draw: function() {
@@ -417,6 +427,13 @@
             this.text = 'Game Over';
             this.textSub = 'Click to Retry';
             this.textColor = 'red';
+            this.create();
+        },
+
+        win: function() {
+            this.text = "You're win!";
+            this.textSub = "Click to Retry";
+            this.textColor = 'yellow';
             this.create();
         }
     };
